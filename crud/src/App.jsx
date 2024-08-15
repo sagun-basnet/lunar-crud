@@ -5,11 +5,11 @@ import { createBrowserRouter, Outlet, Router, RouterProvider } from 'react-route
 
 function App() {
 
-  const Layout = () => {
-    return (
-      <Outlet />
-    )
-  }
+  // const Layout = () => {
+  //   return (
+  //     <Outlet />
+  //   )
+  // }
 
   const router = createBrowserRouter(
     [

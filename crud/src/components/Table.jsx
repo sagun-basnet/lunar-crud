@@ -1,9 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { MdDeleteSweep } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import axios from 'axios';
 
 const Table = () => {
+    const [data, setData] = useState([]);
+
+    const fetchData = async () => {
+        await axios.get('http://localhost:5500/read').then((res) => {
+            // console.log(res.data);
+            setData(res.data);
+
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+    // console.log(data);
+    const handleDelete = (id) => {
+
+    }
+    const handleEdit = (id) => {
+        const uid = id;
+        //`http://localhost:5500/edit/${uid}`
+    }
+
+
+    useEffect(() => {
+        fetchData();
+    }, [data]);
+
     return (
         <div className="flex flex-col w-full">
             <div className="flex justify-end p-8 w-full">
@@ -37,27 +63,34 @@ const Table = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <td scope="row" className="px-6 py-4">
-                                Apple MacBook Pro 17"
-                            </td>
-                            <td className="px-6 py-4">
-                                Silver
-                            </td>
-                            <td className="px-6 py-4">
-                                Laptop
-                            </td>
-                            <td className="px-6 py-4">
-                                $2999
-                            </td>
-                            <td className="px-6 py-4">
-                                password
-                            </td>
-                            <td className="px-6 py-4 flex gap-2">
-                                <button className="p-2 px-4 text-white text-xl grid place-items-center bg-blue-500 rounded-md"><FaEdit /></button>
-                                <button className="p-2 px-4 text-white text-xl grid place-items-center bg-red-500 rounded-md"><MdDeleteSweep /></button>
-                            </td>
-                        </tr>
+                        {
+                            data.map((value, index) => {
+                                return (
+                                    <tr key={index} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                        <td scope="row" className="px-6 py-4">
+                                            {value.name}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {value.address}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {value.contact}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {value.email}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {value.password}
+                                        </td>
+                                        <td className="px-6 py-4 flex gap-2">
+                                            <button onClick={() => handleEdit(value.id)} className="p-2 px-4 text-white text-xl grid place-items-center bg-blue-500 rounded-md"><FaEdit /></button>
+
+                                            <button onClick={handleDelete} className="p-2 px-4 text-white text-xl grid place-items-center bg-red-500 rounded-md"><MdDeleteSweep /></button>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
 
                     </tbody>
                 </table>
